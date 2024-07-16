@@ -18,6 +18,7 @@ class CartAdmin(admin.ModelAdmin):
     list_display = ['user_display', 'product_display', 'quantity', 'created_timestamp']
     list_filter = ['created_timestamp', 'user', 'product__name']
 
+
     def user_display(self, obj):
         if obj.user:
             return str(obj.user)
@@ -26,6 +27,9 @@ class CartAdmin(admin.ModelAdmin):
 
     def product_display(self, obj):
         return str(obj.product.name)
+
+    user_display.short_description = 'Пользователь'
+    product_display.short_description = 'Товар'
 
 
 
