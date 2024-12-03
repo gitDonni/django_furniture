@@ -9,3 +9,6 @@ cache/
 db.sqlite3
 media/
 usernames
+
+orders/migrations/*
+products/migrations/*

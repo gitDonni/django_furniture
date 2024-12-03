@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <h1>Ошибка 404</h1>
+    <p>К сожалению, запрашиваемая страница не найдена.</p>
+    <a href="{% url 'main:index' %}">Вернуться на главную</a>
+
+{% endblock %}
