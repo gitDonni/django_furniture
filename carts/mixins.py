@@ -24,7 +24,7 @@ class CartMixin:
 
     def render_cart(self, request):
         user_cart = get_user_carts(request)
-        context = {'carts':user_cart}
+        context = {'carts': user_cart}
 
         referer = request.META.get('HTTP_REFERER')
         if reverse('orders:create_orders') in referer:

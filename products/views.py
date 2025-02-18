@@ -7,10 +7,10 @@ from products.utils import q_search
 
 class CatalogView(ListView):
     model = Products
-    # queryset = Products.objects.all().order_by('-id')
+    queryset = Products.objects.all().order_by('-id')
     template_name = 'products/catalog.html'
     context_object_name = 'products'
-    paginate_by = 3
+    paginate_by = 12
     allow_empty = True
 
     def get_queryset(self):

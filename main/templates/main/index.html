@@ -1,21 +1,94 @@
 {% extends "base.html" %}
+<!--{% load cache %}-->
+{% load product_tags %}
 {% load static %}
 {% block css%}
-    <link rel="stylesheet" href="{% static 'deps/css/my_footer_css.css' %}">
+
 {% endblock %}
 
-{% block modal_cart %}
-{% include "includes/cart_button.html" %}
-{% endblock %}
 
 {% block content %}
-    <h1 class="mt-5 pt-5"><strong>{{ content }}</strong></h1>
+    <div class="content-block">
+        <h2  class="block-title">{{ content }}</h2>
+        <div class="block-desc"> 
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon"><img src="{% static 'deps/icons/magnifying-glass.png' %}" alt=""></div>
+                    <h3 class="feature-title"> Используемые материалы</h3>
+                    <div class="feature-text">
+                        Мы используем только высококачественные, экологически чистые материалы, чтобы гарантировать долговечность
+                        и надежность каждого изделия. Каждая деталь проходит строгий контроль качества, чтобы ваша мебель
+                        служила вам многие годы.
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><img src="{% static 'deps/icons/design.png' %}" alt=""></div>
+                    <h3 class="feature-title">Дизайн</h3>
+                    <div class="feature-text">
+                        Наши дизайнеры создают мебель, которая гармонично сочетает стиль и функциональность, отражая современные
+                        тенденции в интерьере. Мы тщательно продумываем каждую деталь, чтобы ваша мебель стала акцентом
+                        в любом помещении.
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><img src="{% static 'deps/icons/durability.png' %}" alt=""></div>
+                    <h3 class="feature-title">Долговечность</h3>
+                    <div class="feature-text">
+                    Мы уверены в долговечности нашей мебели, благодаря прочным и надежным материалам, а также качественной
+                        сборке. Каждое изделие создано с расчетом на много лет использования без потери эстетических и
+                    функциональных характеристик.</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><img src="{% static 'deps/icons/eco.png' %}" alt=""></div>
+                    <h3 class="feature-title">Экологичность и безопасность</h3>
+                    <div class="feature-text">
+                        Все материалы, которые мы используем, сертифицированы и не наносят вреда окружающей среде, что делает
+                        нашу мебель безопасной для вас и вашей семьи. Мы заботимся о здоровье наших клиентов и стремимся
+                        минимизировать воздействие на природу.
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon"><img src="{% static 'deps/icons/custom.png' %}" alt=""></div>
+                    <h3 class="feature-title">Индивидуальные заказы</h3>
+                    <div class="feature-text">
+                        Мы предлагаем услугу по созданию мебели на заказ, учитывая все пожелания и особенности вашего интерьера.
+                        Наша мебель станет уникальной частью вашего дома, полностью соответствующей вашим предпочтениям.
+                    </div>
+                </div>
+                 <div class="feature">
+                    <div class="feature-icon"><img src="{% static 'deps/icons/diamond.png' %}" alt=""></div>
+                    <h3 class="feature-title">Уникальность и эксклюзивность</h3>
+                    <div class="feature-text">
+                        Каждая коллекция создается с учетом уникальных дизайнерских решений, а ограниченные серии делают наши
+                        изделия редкими и желанными. Мы предлагаем мебель, которая выделяет ваш интерьер среди прочих,
+                        делая его по-настоящему индивидуальным.
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block brands %}
+
+<section class="brands">
+    <div class="container">
+        <h2 class="brand-title"> Премиальная фурнитура от мировых экспертов </h2>
+        <div class="brands-grid">
+            <div class="brands-logo"><img src="{% static 'deps/images/brands-logo/blum.png' %}" alt="blum"></div>
+            <div class="brands-logo"><img src="{% static 'deps/images/brands-logo/Haefele.png' %}" alt="Haefele"></div>
+            <div class="brands-logo"><img src="{% static 'deps/images/brands-logo/Grass.png' %}" alt="Grass"></div>
+            <div class="brands-logo"><img src="{% static 'deps/images/brands-logo/hettich.png' %}" alt="Hettich"></div>
+            <div class="brands-logo"><img src="{% static 'deps/images/brands-logo/Accuride.png' %}" alt="Accuride"></div>
+            <div class="brands-logo"><img src="{% static 'deps/images/brands-logo/rev.png' %}" alt="Rev-A-Shelf"></div>
+            <div class="brands-logo"><img src="{% static 'deps/images/brands-logo/sugatsune.png' %}" alt="Sugatsune"></div>
+            <div class="brands-logo"><img src="{% static 'deps/images/brands-logo/OMGE.png' %}" alt="OMGE"></div>
+            <div class="brands-logo"><img src="{% static 'deps/images/brands-logo/Richelieu.png' %}" alt="Richelieu Hardware"></div>
+            <div class="brands-logo"><img src="{% static 'deps/images/brands-logo/fritz-fryer.png' %}" alt="Fritz Fryer"></div>
+        </div>
+    </div>
+
+</section>
+
 {% endblock %}
 
-{% block footer %}
-     <footer class="py-4 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Home Python Hub Studio 2023</p>
-        </div>
-    </footer>
-{% endblock %}

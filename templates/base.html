@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 {% load static %}
 {% load cache %}
-    {% load product_tags %}
+{% load product_tags %}
+{% load contact_tags %}
+{% load phone_filter_tags %}
+{% load carts_tags %}
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'deps/css/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <link rel="stylesheet" href="{% static 'deps/css/my_css.css' %}">
-    <!-- Стиль footer-a для главной страницы -->
-    {% block css %}
-    {% endblock  %}
     <!-- Favicons for different platforms -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'deps/favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'deps/favicon/favicon-32x32.png' %}">
@@ -22,108 +23,177 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-            <div class="container">
-                <a class="navbar-brand" href="{% url 'main:index' %}">Home</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown ">
-                            <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Информация
+    <header class="header">
+        <div class="container">
+            <nav>
+                <div class="navbar">
+                    <div class="nav-logo">
+                        <a class="logo" href="{% url 'main:index' %}">CASA ACCOGLIENTE</a>
+                    </div>
+                    {% user_carts request as carts %}
+                    <ul class="menu">
+                        <li><a class="dropdown-item" href="{% url 'main:about' %}">О нас</a></li>
+                        <li><a class="dropdown-item" href="{% url 'main:payment_and_delivery' %}">Доставка и оплата</a></li>
+                        <li><a class="dropdown-item" href="{% url 'main:contact_info' %}">Контакты</a></li>
+                        <li>
+                            <a href="{% url 'user:users_cart' %}">
+                                <img class="cart-icon" src="{% static 'deps/icons/cart.svg' %}" alt="Корзина" width="30" height="31">
+                                <div class="products-in-cart-count">{{ carts.total_quantity }}</div>
                             </a>
+                        </li>
+                        {% if not user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'user:login' %}">
+                                <img src="{% static 'deps/icons/user.svg' %}" alt="Профиль" width="28" height="30">
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item dropdown">
+                            <button class="dropdown_toggle" aria-expanded="false">
+                                <img src="{% static 'deps/icons/user.svg' %}" alt="Профиль" width="28" height="30">
+                            </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item  text-white" href="{% url 'main:payment_and_delivery' %}">Доставка и оплата</a></li>
-                                <li><a class="dropdown-item  text-white" href="{% url 'main:contact_info' %}">Контактная информация</a></li>
-                                <li><a class="dropdown-item  text-white" href="{% url 'main:about' %}">Про нас</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'user:users_cart' %}">Корзина</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'user:profile' %}">Личный кабинет</a>
+                                </li>
+                                {% if user.is_admin or user.is_staff %}
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'admin:index' %}">Админ панель</a>
+                                </li>
+                                {% endif %}
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'user:logout' %}">Выйти</a>
+                                </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link  text-white" href="{% url 'user:users_cart' %}">Корзина</a>
-                        </li>
-                        {% if not user.is_authenticated%}
-                            <li class="nav-item">
-                                <a class="nav-link  text-white" href="{% url 'user:login' %}">Войти</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item dropdown ">
-                                <a class="nav-link dropdown-toggle text-white" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Мой профиль
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item  text-white" href="{% url 'user:users_cart' %}">Корзина</a></li>
-                                    <li><a class="dropdown-item  text-white" href="{% url 'user:profile' %}">Личный кабинет</a>
-                                    </li>
-                                    {% if user.is_admin or user.is_staff %}
-                                        <li><a class="dropdown-item  text-white" href="{% url 'admin:index' %}">Админ панель</a></li>
-                                    {% endif %}
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item  text-white" href="{% url 'user:logout' %}">Выйти</a></li>
-                                </ul>
-                            </li>
-                        {% endif%}
+                    {% endif %}
                     </ul>
-                    <form class="d-flex" role="search" action="{% url 'catalog:search' %}" method="get">
-                        <input class="form-control me-2" type="search" name="q" placeholder="Поиск" aria-label="Search">
-                        <button class="btn btn-outline-success text-white" type="submit">Поиск</button>
-                    </form>
                 </div>
-            </div>
-        </nav>
+           </nav>
+        </div>
     </header>
     <section>
-        <div class="container">
-            <!-- Каталог и корзина с фиксированным расположением на странице -->
-            <div class="row mt-1 position-fixed z-3">
+        <div class="slider-wrap">
+            <div class="container">
+
+                {% block categories %}
                 <!-- Каталог -->
-                <div class="dropdown mb-2">
-                    <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Каталог
-                        <img class="mx-1" src="{% static 'deps/icons/grid-fill.svg'%}" alt="Catalog Icon" width="16"
-                            height="16">
-                    </button>
-                    <ul class="dropdown-menu bg-dark" data-bs-theme="dark">
+                <div class="category">
+                    <ul class="category-list">
+                        <li class="category-item cat_title">Каталог</li>
                         {% cache 60 catalog_categories %}
                         {% tag_categories as categories %}
                         {% for category in categories %}
-                        <li><a class="dropdown-item text-white" href="{% url 'catalog:index' category.slug %}">{{ category.name }}</a></li>
+                        <li class="category-item"><a href="{% url 'catalog:index' category.slug %}">{{ category.name }}</a></li>
                         {% endfor %}
                         {% endcache %}
                     </ul>
+
                 </div>
-                <!-- Значек корзины, вызывает модальное окно -->
-                {% block modal_cart %} {% endblock %}
-                <!-- Закончилась разметка модального окна -->
+                {% endblock %}
+
+            </div>
+            <!-- Swiper -->
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <h3 class="slide-title">
+                            Poltrona Elegante
+                        </h3>
+                        <div class="slide-desc">
+                            это стильное и элегантное кресло, которое станет украшением любого интерьера. Мягкие формы и
+                            высококачественные материалы создают атмосферу уюта и роскоши, идеально подходя для гостиной или рабочего кабинета.
+                        </div>
+                        <img src="{% static 'deps/images/swiper/chiar.png' %}" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <h3 class="slide-title">
+                            Poltrona Riflesso
+                        </h3>
+                        <div class="slide-desc">
+                            - Questa poltrona è un esempio di design moderno con una struttura in metallo leggera e
+                            chiaramente visibile che crea un'illusione ottica attraente.
+                        </div>
+                         <img src="{% static 'deps/images/swiper/wing.png' %}" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <h3 class="slide-title">
+                            Divano Sereno
+                        </h3>
+                        <div class="slide-desc">
+                            - это диван, воплощающий идею комфорта и спокойствия. С его мягкими подушками и изысканным
+                            дизайном он подарит вам ощущение уюта и расслабления в любой комнате.
+                        </div>
+                        <img src="{% static 'deps/images/swiper/sofa.png' %}" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <h3 class="slide-title">
+                            Poltrona Elegante
+                        </h3>
+                        <div class="slide-desc">
+                            - это стильное и элегантное кресло, которое станет украшением любого интерьера. Мягкие формы и
+                            высококачественные материалы создают атмосферу уюта и роскоши, идеально подходя для гостиной или рабочего кабинета.
+                        </div>
+                        <img src="{% static 'deps/images/swiper/wing-chiar.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="pagination">
+                    <div class="swiper-button-next">
+                        <div class="slide-title">
+
+                        </div>
+                        <img src="{% static 'deps/icons/right.png' %}" alt="">
+                    </div>
+                    <div class="swiper-button-prev">
+                        <div class="slide-title">
+
+                        </div>
+                        <img src="{% static 'deps/icons/left.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
             </div>
         </div>
-        <!-- Контент -->
         <div class="container">
-            <div class="row mt-1">
-                <div class="col-lg-2">
-                    <!-- Пустой блок на Ваше усмотрение -->
-                </div>
-                <div class="col-lg-10">
-                    <!-- Контент на странице -->
-                    {% include 'includes/notifications.html' %}
-                    {% block content %}{% endblock %}
-                </div>
-            </div>
+            {% block content %}
+
+            {% endblock %}
         </div>
     </section>
-    {% block footer %} {% endblock %}
+{% block brands %} {% endblock %}
+{% block footer %}
+{% tag_contacts as contacts %}
+{% for contact in contacts %}
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="socials">
+                <a href="{{ contact.facebook }}" class="social-link" target="_blank"><img src="{% static 'deps/icons/socials/fb.png' %}" alt="CASA ACCOGLIENTE"></a>
+                <a href="{{ contact.instagram }}" class="social-link" target="_blank"><img src="{% static 'deps/icons/socials/In.png' %}" alt=""></a>
+                <a href="{{ contact.vk }}" class="social-link" target="_blank"><img src="{% static 'deps/icons/socials/vk.png' %}" alt=""></a>
+            </div>
+            <div class="footer-logo">
+                <a class="logo" href="{% url 'main:index' %}">CASA ACCOGLIENTE</a>
+            </div>
+            <div class="contacts">
+                <p>Адрес: {{ contact.address }}</p>
+                <p>Телефон: +{{ contact.phone|phone_format }}</p>
+                <p>Email: {{ contact.email }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}
     <script src="{% static 'deps/js/jquery/jquery-3.7.0.min.js' %}"></script>
-    <script src="{% static 'deps/js/jquery-ajax.js' %}"></script>
-    <script src="{% static 'deps/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="{% static 'deps/js/main.js' %}"></script>
 </body>
 
 </html>

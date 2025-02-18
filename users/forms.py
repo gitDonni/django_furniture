@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
-
+from .widgets import CustomClearableFileInput
 from users.models import User
 
 
@@ -110,11 +110,14 @@ class ProfileForm(UserChangeForm):
             'email',
         )
 
-    image = forms.ImageField(required=False)
+    image = forms.ImageField(required=False,
+                             widget=CustomClearableFileInput(attrs={'class': 'custom-file-input'})
+                             )
     first_name = forms.CharField()
     last_name = forms.CharField()
     username = forms.CharField()
     email = forms.CharField()
+
 
 
     # image = forms.ImageField(
