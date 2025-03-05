@@ -47,7 +47,7 @@
                     {% else %}
                         <div class="new-price-on_page"><strong>{{ product.price }} $</strong></div>
                     {% endif %}
-                    <a href="{% url 'cart:cart_add' %}" class="add-to-cart" data-product-id="{{ product.id }}">
+                    <a href="{% url 'cart:cart_add' %}" class="add-to-cart-button product_page" data-product-id="{{ product.id }}">
                     {% csrf_token %}
                         Добавить в корзину
                     </a>

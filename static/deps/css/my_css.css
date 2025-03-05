@@ -817,7 +817,7 @@ input[type="checkbox"], input[type="radio"] {
     color: #464646;;
 }
 
-.add-to-cart {
+.product_page{
     margin: 20px 0;
     display: flex;
     background-color: #f9bf29;
